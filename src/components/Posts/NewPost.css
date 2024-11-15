@@ -1,0 +1,35 @@
+.new-post {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  width: 500px;
+}
+
+.new-head {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.new-desc-box {
+  display: flex;
+  justify-content: center;
+}
+
+.new-desc {
+  width: 400px;
+  height: 50px;
+}
+
+.new-tail {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  height: 30px;
+  border-bottom: 1px solid black;
+}
+
+.new-song-choice {
+  background-color: aquamarine;
+  height: 30px;
+}

@@ -1,0 +1,33 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid black;
+  width: 500px;
+  height: 100vh;
+}
+
+.profile-head {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 200px;
+  border-bottom: 1px solid black;
+}
+
+.profile-pic {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: aqua;
+}
+
+.profile-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+}
+
+.profile-button {
+  width: inherit;
+  height: 40px;
+}

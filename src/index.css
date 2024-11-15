@@ -1,0 +1,6 @@
+body {
+  margin: 0;
+  background-image: url('../public/song-finder-background.png');
+  background-size: cover;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

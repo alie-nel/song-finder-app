@@ -1,0 +1,27 @@
+.search {
+  display: flex;
+  gap: 10px;
+}
+
+.search-bar {
+  width: 500px;
+  height: 50px;
+  font-size: 1.2rem;
+  border: 2px solid white;
+  border-radius: 2px;
+  color: white;
+  background-color: #212121;
+}
+
+.search-bar::placeholder {
+  color: grey;
+}
+
+.search-button {
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 2px;
+  color: white;
+  background-color: #212121;
+}
