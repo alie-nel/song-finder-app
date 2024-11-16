@@ -1,7 +1,7 @@
 import "./Login.css";
 import { useState } from "react";
 import { auth, googleProvider } from "../../config/firebase";
-import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setIsAuth }) => {

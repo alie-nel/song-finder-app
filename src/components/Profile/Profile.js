@@ -2,12 +2,15 @@ import "./Profile.css";
 import { auth } from "../../config/firebase";
 
 const Profile = () => {
+
+  const userName = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+  console.log(auth.currentUser);
   
   return (
     <div className="profile">
       <div className="profile-head">
         <p className="profile-username">
-          {auth.currentUser.displayName}
+          {userName}
         </p>
       </div>
       <div className="profile-buttons">

@@ -3,13 +3,21 @@ import NewPost from "../../components/Posts/NewPost";
 import Posts from "../../components/Posts/Posts";
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 const SongPage = ({ isAuth }) => {
   const { songId } = useParams();
   const [song, setSong] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/login");
+    }
+  }, [isAuth, navigate]);
 
   useEffect(() => {
     const getSong = async () => {
@@ -30,7 +38,6 @@ const SongPage = ({ isAuth }) => {
   }, [songId]);
 
   if (!song) {
-    // Optionally, show a loading message or a fallback UI if song data is not yet loaded
     return <div>Loading...</div>;
   }
   
