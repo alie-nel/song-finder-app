@@ -31,7 +31,7 @@ const Songs = () => {
     <div className="songs">
       {songs.map((song) => (
       <button>
-      <Link to={song.id}>
+      <Link to={`/song/${song.id}`}>
       <div className="song">
           <p className="song-title">
             {song.title}
