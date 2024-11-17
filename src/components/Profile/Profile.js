@@ -1,7 +1,7 @@
 import "./Profile.css";
 import { useState, useEffect } from "react";
 import { auth, db } from "../../config/firebase";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+import { doc, getDoc, collection } from "firebase/firestore";
 
 const Profile = () => {
   const [userName, setUserName] = useState("");
@@ -62,7 +62,7 @@ const Profile = () => {
 
           setUserPosts(posts);
           setUserLikes(likes);
-          setUserLikes(stars);
+          setUserStars(stars);
         }
       } catch (err) {
         console.error(err);
@@ -70,25 +70,65 @@ const Profile = () => {
     };
 
     getUserPosts();
-  }, []);
+  }, [postsCollection]);
+
+  const [section, setSection] = useState("");
+
+  const displaySection = async (sec) => {
+    setSection(sec);
+  }
   
   return (
     <div className="profile">
-      <div className="profile-head">
-        <p className="profile-username">
-          {userName}
-        </p>
+      <div className="profile-left">
+        <div className="profile-head">
+          <p className="profile-username">
+            {userName}
+          </p>
+        </div>
+        <div className="profile-buttons">
+          <button id="profile-posts-button" className="profile-button" onClick={() => displaySection("posts")}>
+            POSTS
+          </button>
+          <button id="profile-liked-button" className="profile-button" onClick={() => displaySection("likes")}>
+            LIKED
+          </button>
+          <button id="profile-starred-button" className="profile-button" onClick={() => displaySection("stars")}>
+            STARRED
+          </button>          
+        </div>
       </div>
-      <div className="profile-buttons">
-        <button id="profile-starred-button" className="profile-button">
-          STARRED
-        </button>
-        <button id="profile-liked-button" className="profile-button">
-          LIKED
-        </button>
-        <button id="profile-posts-button" className="profile-button">
-          POSTS
-        </button>
+      <div className="profile-right">
+        <div id="profile-posts" className="profile-info" style={{ display: section === "posts" ? "block" : "none" }}>
+          {userPosts.map((post) => (
+            <div key={post.id}>
+              <p>{post.recSong.title}</p>
+              <p>{post.recSong.artist}</p>
+              <p>{post.desc}</p>
+              <p>Posted by {post.user.username}</p>
+            </div>
+          ))}
+        </div>
+        <div id="profile-likes" className="profile-info" style={{ display: section === "likes" ? "block" : "none" }}>
+          {userLikes.map((post) => (
+            <div key={post.id}>
+              <p>{post.recSong.title}</p>
+              <p>{post.recSong.artist}</p>
+              <p>{post.desc}</p>
+              <p>Posted by {post.user.username}</p>
+            </div>
+          ))}
+        </div>
+        <div id="profile-stars" className="profile-info" style={{ display: section === "stars" ? "block" : "none" }}>
+          {userStars.map((post) => (
+            <div key={post.id}>
+              <p>{post.recSong.title}</p>
+              <p>{post.recSong.artist}</p>
+              <p>{post.desc}</p>
+              <p>Posted by {post.user.username}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
