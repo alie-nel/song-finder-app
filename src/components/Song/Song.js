@@ -30,17 +30,17 @@ const Songs = () => {
   <>
     <div className="songs">
       {songs.map((song) => (
-      <button>
-      <Link to={`/song/${song.id}`}>
-      <div className="song">
-          <p className="song-title">
-            {song.title}
-          </p>
-          <p className="song-artist">
-            {song.artist}
-          </p>
-      </div>
-      </Link>
+      <button key={song.id}>
+        <Link to={`/song/${song.id}`}>
+        <div className="song">
+            <p className="song-title">
+              {song.title}
+            </p>
+            <p className="song-artist">
+              {song.artist}
+            </p>
+        </div>
+        </Link>
       </button>
       ))}
     </div>    

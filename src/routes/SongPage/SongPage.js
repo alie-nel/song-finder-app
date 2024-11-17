@@ -17,13 +17,12 @@ const SongPage = ({ isAuth }) => {
     if (!isAuth) {
       navigate("/login");
     }
-  }, [isAuth, navigate]);
+  });
 
   useEffect(() => {
     const getSong = async () => {
       try {
         const songDoc = await getDoc(doc(db, "songs", songId));
-        console.log(songId)
         if (songDoc.exists()) {
           setSong(songDoc.data());
         } else {
@@ -46,8 +45,8 @@ const SongPage = ({ isAuth }) => {
       <h1 className="song-titles">{song.title}</h1>
       <h2 className="song-titles" id="song-artist">{song.artist}</h2>
         
-        <NewPost isAuth={isAuth}/>
-        <Posts isAuth={isAuth}/>
+        <NewPost isAuth={isAuth} songId={songId}/>
+        <Posts isAuth={isAuth} songId={songId}/>
     </div>
   )
 }

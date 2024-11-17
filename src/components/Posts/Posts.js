@@ -1,9 +1,9 @@
 import './Posts.css';
 import { useEffect, useState } from "react";
 import { db, auth } from "../../config/firebase";
-import { getDocs, deleteDoc, doc, collection } from "firebase/firestore";
+import { getDocs, deleteDoc, doc, collection, query, where } from "firebase/firestore";
 
-const Posts = ({ isAuth }) => {
+const Posts = ({ isAuth, songId }) => {
   const [posts, setPosts] = useState([]);
 
   const postsCollection = collection(db, "posts");
@@ -11,7 +11,8 @@ const Posts = ({ isAuth }) => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const postsData = await getDocs(postsCollection);
+        const postsFiltered = query(postsCollection, where("stemSongId", "==", songId));
+        const postsData = await getDocs(postsFiltered);
         const importantData = postsData.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
@@ -25,27 +26,6 @@ const Posts = ({ isAuth }) => {
     getPosts();
   }, []);
 
-  const [songs, setSongs] = useState([]);
-
-  const songsCollection = collection(db, "songs");
-
-  useEffect(() => {
-    const getSongs = async () => {
-      try {
-        const songsData = await getDocs(songsCollection);
-        const importantData = songsData.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setSongs(importantData);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    
-    getSongs();
-  }, []);
-
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
@@ -55,7 +35,7 @@ const Posts = ({ isAuth }) => {
   <>
     <div className="posts">
       {posts.map((post) => (
-      <div className="post">
+      <div className="post" key={post.id}>
         <div className="post-head">
           <p className="post-song-title">
             {post.recSong.title}
@@ -89,7 +69,7 @@ const Posts = ({ isAuth }) => {
           </p>
         </div>
         <div>
-          {isAuth && post.user.id === auth.currentUser.uui && (
+          {isAuth && post.user.id === auth.currentUser.uid && (
           <button
             onClick={() => {
               deletePost(post.id);

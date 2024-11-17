@@ -4,7 +4,6 @@ import { auth } from "../../config/firebase";
 const Profile = () => {
 
   const userName = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
-  console.log(auth.currentUser);
   
   return (
     <div className="profile">

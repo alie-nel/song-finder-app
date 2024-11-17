@@ -1,44 +1,45 @@
 import './NewPost.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { db, auth } from "../../config/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
 
-const NewPost = ({ isAuth }) => {
-  const [recSong, setRecTitle] = useState("");
+const NewPost = ({ isAuth, songId }) => {
+  const userName = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+  
+  const [recTitle, setRecTitle] = useState("");
   const [recArtist, setRecArtist] = useState("");
   const [postDesc, setPostDesc] = useState("");
 
   const postsCollection = collection(db, "posts");
-  let redirect = useNavigate();
 
-  const submitPost = async () => {
+  const submitPost = async (e) => {
+    e.preventDefault();
+
     try {
       await addDoc(postsCollection, {
-        recSong: { title: setRecTitle, artist: setRecArtist },
-        stemSong: { title: "", artist: "", id: "" },
-        desc: setPostDesc,
-        user: { username: auth.currentUser.displayName, id: auth.currentUser.uid },
+        recSong: { title: recTitle, artist: recArtist },
+        stemSongId: songId,
+        desc: postDesc,
+        user: { username: userName, id: auth.currentUser.uid },
         likes: { num: 0, users: [] },
         dislikes: { num: 0, users: [] },
+        stars: []
       });
+
+      setRecTitle("");
+      setRecArtist("");
+      setPostDesc("");
+      
     } catch (err) {
         console.error(err);
     }
   }
-
-  useEffect(() => {
-    if (!isAuth) {
-      redirect("/login");
-    }
-  })
-  
   
   return (
     <form className="new-post">
       <div className="new-head">
         <p className="new-username">
-          {auth.currentUser.displayName}
+          {userName}
         </p>
       </div>
       <div className="new-song-choice">
