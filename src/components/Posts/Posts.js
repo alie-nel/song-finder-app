@@ -1,7 +1,8 @@
 import './Posts.css';
 import { useEffect, useState } from "react";
 import { db, auth } from "../../config/firebase";
-import { getDocs, deleteDoc, doc, collection, query, where } from "firebase/firestore";
+import { getDoc, getDocs, doc, collection, query, where, orderBy } from "firebase/firestore";
+import { updateDoc, deleteDoc, arrayUnion, arrayRemove, increment } from "firebase/firestore";
 
 const Posts = ({ isAuth, songId }) => {
   const [posts, setPosts] = useState([]);
@@ -11,7 +12,7 @@ const Posts = ({ isAuth, songId }) => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const postsFiltered = query(postsCollection, where("stemSongId", "==", songId));
+        const postsFiltered = query(postsCollection, where("stemSongId", "==", songId), orderBy("likes.num", "desc"));
         const postsData = await getDocs(postsFiltered);
         const importantData = postsData.docs.map((doc) => ({
           ...doc.data(),
@@ -24,7 +25,51 @@ const Posts = ({ isAuth, songId }) => {
     };
     
     getPosts();
-  }, []);
+  }, [postsCollection, songId]);
+
+  const likePost = async (id) => {
+    try {
+      const postDoc = doc(db, "posts", id);
+      const postSnap = await getDoc(postDoc);
+      const postData = postSnap.data();
+
+      if (postData.likes.users.includes(auth.currentUser.uid)) {
+        await updateDoc(postDoc, {
+          "likes.num": increment(-1),
+          "likes.users": arrayRemove(auth.currentUser.uid),
+        });
+      } else {
+        await updateDoc(postDoc, {
+          "likes.num": increment(1),
+          "likes.users": arrayUnion(auth.currentUser.uid),
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const dislikePost = async (id) => {
+    try {
+      const postDoc = doc(db, "posts", id);
+      const postSnap = await getDoc(postDoc);
+      const postData = postSnap.data();
+
+      if (postData.dislikes.users.includes(auth.currentUser.uid)) {
+        await updateDoc(postDoc, {
+          "dislikes.num": increment(-1),
+          "dislikes.users": arrayRemove(auth.currentUser.uid),
+        });
+      } else {
+        await updateDoc(postDoc, {
+          "dislikes.num": increment(1),
+          "dislikes.users": arrayUnion(auth.currentUser.uid),
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
@@ -55,14 +100,21 @@ const Posts = ({ isAuth, songId }) => {
           </p>
         </div>
         <div className="post-tail">
-          <button id="post-like-button" className="post-button">
+          <button id="post-like-button" className="post-button"
+            onClick={() => {
+              likePost(post.id);
+            }}
+          >
 
           </button>
           <p id="post-num-likes" className="post-data">
             {post.likes.num}
           </p>
-          <button id="post-dislike-button" className="post-button">
-            
+          <button id="post-dislike-button" className="post-button"
+            onClick={() => {
+              dislikePost(post.id);
+            }}
+          >
           </button>
           <p id="post-num-dislikes" className="post-data">
             {post.dislikes.num}
