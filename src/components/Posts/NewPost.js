@@ -1,22 +1,41 @@
 import './NewPost.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db, auth } from "../../config/firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, getDoc, addDoc, updateDoc, arrayUnion, doc } from "firebase/firestore";
 
 const NewPost = ({ isAuth, songId }) => {
-  const userName = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const getUserName = async () => {
+      try {
+        const userRef = doc(db, "profiles", auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        const profileUsername = userData.username;
+
+        setUserName(profileUsername);
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getUserName();
+  }, []);
   
   const [recTitle, setRecTitle] = useState("");
   const [recArtist, setRecArtist] = useState("");
   const [postDesc, setPostDesc] = useState("");
 
-  const postsCollection = collection(db, "posts");
+  const postsCollection = collection(db, "posts"); 
 
   const submitPost = async (e) => {
     e.preventDefault();
 
     try {
-      await addDoc(postsCollection, {
+      const postRef = await addDoc(postsCollection, {
         recSong: { title: recTitle, artist: recArtist },
         stemSongId: songId,
         desc: postDesc,
@@ -24,6 +43,11 @@ const NewPost = ({ isAuth, songId }) => {
         likes: { num: 0, users: [] },
         dislikes: { num: 0, users: [] },
         stars: []
+      });
+
+      const userRef = doc(db, "profiles", auth.currentUser.uid);
+      await updateDoc(userRef, {
+        posts: arrayUnion(postRef.id),
       });
 
       setRecTitle("");

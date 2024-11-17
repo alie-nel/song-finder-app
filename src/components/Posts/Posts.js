@@ -27,21 +27,63 @@ const Posts = ({ isAuth, songId }) => {
     getPosts();
   }, [postsCollection, songId]);
 
+  const starPost = async (id) => {
+    try {
+      const postDoc = doc(db, "posts", id);
+      const postSnap = await getDoc(postDoc);
+      const postData = postSnap.data();
+
+      const userRef = doc(db, "profiles", auth.currentUser.uid);
+
+      if (postData.stars.includes(auth.currentUser.uid)) {
+        await updateDoc(postDoc, {
+          stars: arrayRemove(auth.currentUser.uid),
+        });
+
+        await updateDoc(userRef, {
+          stars: arrayRemove(id),
+        });
+
+      } else {
+        await updateDoc(postDoc, {
+          stars: arrayUnion(auth.currentUser.uid),
+        });
+
+        await updateDoc(userRef, {
+          stars: arrayUnion(id),
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const likePost = async (id) => {
     try {
       const postDoc = doc(db, "posts", id);
       const postSnap = await getDoc(postDoc);
       const postData = postSnap.data();
 
+      const userRef = doc(db, "profiles", auth.currentUser.uid);
+
       if (postData.likes.users.includes(auth.currentUser.uid)) {
         await updateDoc(postDoc, {
           "likes.num": increment(-1),
           "likes.users": arrayRemove(auth.currentUser.uid),
         });
+
+        await updateDoc(userRef, {
+          likes: arrayRemove(id),
+        });
+
       } else {
         await updateDoc(postDoc, {
           "likes.num": increment(1),
           "likes.users": arrayUnion(auth.currentUser.uid),
+        });
+
+        await updateDoc(userRef, {
+          likes: arrayUnion(id),
         });
       };
     } catch (err) {
@@ -100,16 +142,23 @@ const Posts = ({ isAuth, songId }) => {
           </p>
         </div>
         <div className="post-tail">
+          <button id="post-star-button" className="post-button"
+            onClick={() => {
+              starPost(post.id);
+            }}
+          >
+          </button>
+          
           <button id="post-like-button" className="post-button"
             onClick={() => {
               likePost(post.id);
             }}
           >
-
           </button>
           <p id="post-num-likes" className="post-data">
             {post.likes.num}
           </p>
+
           <button id="post-dislike-button" className="post-button"
             onClick={() => {
               dislikePost(post.id);
@@ -119,6 +168,7 @@ const Posts = ({ isAuth, songId }) => {
           <p id="post-num-dislikes" className="post-data">
             {post.dislikes.num}
           </p>
+
         </div>
         <div>
           {isAuth && post.user.id === auth.currentUser.uid && (

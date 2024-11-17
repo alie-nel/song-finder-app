@@ -23,7 +23,7 @@ const Login = ({ setIsAuth }) => {
           username: user.email.split("@")[0],
           posts: [],
           likes: [], 
-          starred: [],
+          stars: [],
         });
       }
 
