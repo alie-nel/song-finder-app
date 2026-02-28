@@ -1,0 +1,9 @@
+.nav-button {
+  color: white;
+  border: 1px solid white;
+  background-color: #212121;
+  margin: 7px;
+  width: 80px;
+  height: 30px;
+  font-size: medium;
+}

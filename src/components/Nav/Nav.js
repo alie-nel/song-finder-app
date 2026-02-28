@@ -1,3 +1,4 @@
+import './Nav.css';
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -19,14 +20,28 @@ const Nav = ({ isAuth, setIsAuth }) => {
   
   return (
     <nav>
-      <Link to="/">Home</Link>
+      <Link to="/">
+        <button className="nav-button">
+          Home
+        </button>
+      </Link>
       
       {!isAuth ? 
-        <Link to="/login">Login</Link> 
+        <Link to="/login">
+          <button className="nav-button">
+            Login
+          </button> 
+        </Link> 
         : 
         <>
-          <Link to="/profile">Profile</Link>
-        <button onClick={logOut}>Logout</button>
+          <Link to="/profile">
+            <button className="nav-button">
+              Profile
+            </button> 
+          </Link>
+          <button className="nav-button" onClick={logOut}>
+            Logout
+          </button>
         </>
       }
     </nav>

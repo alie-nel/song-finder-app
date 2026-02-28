@@ -1,3 +1,7 @@
+.loading {
+  color: white;
+}
+
 .song-page {
   display: flex;
   flex-direction: column;

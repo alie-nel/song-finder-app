@@ -37,7 +37,7 @@ const SongPage = ({ isAuth }) => {
   }, [songId]);
 
   if (!song) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
   
   return (

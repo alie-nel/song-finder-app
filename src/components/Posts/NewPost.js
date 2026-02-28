@@ -63,7 +63,7 @@ const NewPost = ({ isAuth, songId }) => {
     <form className="new-post">
       <div className="new-head">
         <p className="new-username">
-          {userName}
+          New recommendation from {userName}
         </p>
       </div>
       <div className="new-song-choice">

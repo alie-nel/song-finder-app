@@ -3,12 +3,32 @@
   flex-direction: column;
   border: 1px solid white;
   width: 500px;
+  color: white;
 }
 
 .new-head {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
+}
+
+.new-song-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.new-song-title {
+  border: 1px solid white;
+  background-color: #212121;
+  color: white;
+}
+
+.new-song-artist {
+  border: 1px solid white;
+  background-color: #212121;
+  color: white;
 }
 
 .new-desc-box {
@@ -19,6 +39,9 @@
 .new-desc {
   width: 400px;
   height: 50px;
+  border: 1px solid white;
+  background-color: #212121;
+  color: white;
 }
 
 .new-tail {
@@ -26,10 +49,15 @@
   align-items: center;
   justify-content: end;
   height: 30px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
+}
+
+.new-post-button {
+  border: 1px solid white;
+  background-color: #212121;
+  color: white;
 }
 
 .new-song-choice {
-  background-color: aquamarine;
   height: 30px;
 }

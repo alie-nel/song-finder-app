@@ -124,11 +124,8 @@ const Posts = ({ isAuth, songId }) => {
       {posts.map((post) => (
       <div className="post" key={post.id}>
         <div className="post-head">
-          <p className="post-song-title">
-            {post.recSong.title}
-          </p>
-          <p className="post-song-artist">
-            {post.recSong.artist}
+          <p className="post-song">
+            {post.recSong.title} - {post.recSong.artist}
           </p>
         </div>
         <div className="post-desc-box">
@@ -147,6 +144,7 @@ const Posts = ({ isAuth, songId }) => {
               starPost(post.id);
             }}
           >
+            ☆
           </button>
           
           <button id="post-like-button" className="post-button"
@@ -154,6 +152,7 @@ const Posts = ({ isAuth, songId }) => {
               likePost(post.id);
             }}
           >
+            ↑
           </button>
           <p id="post-num-likes" className="post-data">
             {post.likes.num}
@@ -164,6 +163,7 @@ const Posts = ({ isAuth, songId }) => {
               dislikePost(post.id);
             }}
           >
+            ↓
           </button>
           <p id="post-num-dislikes" className="post-data">
             {post.dislikes.num}
@@ -172,7 +172,7 @@ const Posts = ({ isAuth, songId }) => {
         </div>
         <div>
           {isAuth && post.user.id === auth.currentUser.uid && (
-          <button
+          <button className="post-delete-button"
             onClick={() => {
               deletePost(post.id);
             }}

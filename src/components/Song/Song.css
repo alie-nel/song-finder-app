@@ -7,7 +7,12 @@
 .song {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
   width: 100px;
   border: 1px solid white;
+  background-color: #212121;
+  color: white;
+}
+
+.song-title {
+  color: white
 }
