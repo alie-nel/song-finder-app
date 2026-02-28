@@ -46,18 +46,22 @@ On this page, you can like, dislike, or star other users' song recommendations. 
 Here, you can recommend songs that you think are similar:
 <br><br>
 <b>Before</b>
+<br>
 ![Recommend song: before](./site/song_rec1.png)
 
 <b>After</b>
+<br>
 ![Recommend song: after](./site/song_rec2.png)
 
 #### Delete a song recommendation
 Of course, you can also delete posts you've created:
 <br><br>
 <b>Before</b>
+<br>
 ![Delete post: before](./site/song_rec2.png)
 
 <b>After deleting "Heartbreaker" by Lily May</b>
+<br>
 ![Delete post: after](./site/delete_post.png)
 
 ### Profile
